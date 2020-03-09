@@ -52,18 +52,11 @@ def load_images_from_folder(folder):
             print("don't fucking work m8")
     return images
 
-
-
 load_images_from_folder(dirname)
 
 print(len(images))
-
-# for i in images:
-    # image = cv2.imread(subfolder + 'opencv1.png')    
-    # result = cv2.imread('result.png')
-    # combined = cv2.multiply(image, result)
-    # cv2.imwrite('result.png', combined)
     
 # on button press, capture colour image of orange peel
-    
+
+# kill camera service
 del(camera)
