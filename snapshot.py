@@ -1,3 +1,4 @@
+import time
 import cv2
 import numpy
 import matplotlib
@@ -5,8 +6,13 @@ import gpiozero
 from PIL import Image
 
 import os
-dirname = "test"
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+dirname = "test" + timestr
 os.mkdir(dirname)
+
+images = []
+
 
 # create new blank image for compositing edge detection images onto
 im = Image.new("RGB", (640, 480), "white")
@@ -27,10 +33,27 @@ for i in range(10):
 # on button press (eventually when button is pressed again)
 # multiply all images together and export as one image
 
-image = cv2.imread('opencv1.png')    
-result = cv2.imread('result.png')
-combined = cv2.multiply(image, result)
-cv2.imwrite('result.png', combined)
+def load_images_from_folder(folder):
+    for filename in os.listdir(folder):
+        img = cv2.imread(os.path.join(folder,filename))
+        if img is not None:
+            # print("OK")
+            images.append(img)
+        else:
+            print("don't fucking work m8")
+    return images
+
+
+
+load_images_from_folder(dirname)
+
+print(len(images))
+
+#for i in images:
+    # image = cv2.imread('opencv1.png')    
+    # result = cv2.imread('result.png')
+    # combined = cv2.multiply(image, result)
+    # cv2.imwrite('result.png', combined)
     
 # on button press, capture colour image of orange peel
     
