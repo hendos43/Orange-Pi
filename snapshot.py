@@ -4,6 +4,10 @@ import matplotlib
 import gpiozero
 from PIL import Image
 
+import os
+dirname = "test"
+os.mkdir(dirname)
+
 # create new blank image for compositing edge detection images onto
 im = Image.new("RGB", (640, 480), "white")
 im.save('result.png')
@@ -18,7 +22,7 @@ for i in range(10):
     return_value, image = camera.read()
     edges = cv2.Canny(image, 100, 200)
     edges = cv2.bitwise_not(edges)
-    cv2.imwrite('opencv'+str(i)+'.png', edges)
+    cv2.imwrite(os.path.join(dirname,'opencv'+str(i)+'.png'), edges)
     
 # on button press (eventually when button is pressed again)
 # multiply all images together and export as one image
