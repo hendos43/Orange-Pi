@@ -5,18 +5,23 @@ import matplotlib
 import gpiozero
 from PIL import Image
 
-import os
+import keyboard
+
+import os, sys
 import time
 timestr = time.strftime("%Y%m%d-%H%M%S")
-dirname = "test" + timestr
+dirname = "test-" + timestr
 os.mkdir(dirname)
+subfolder = dirname + "/result"
+os.mkdir(subfolder)
+
 
 images = []
 
 
 # create new blank image for compositing edge detection images onto
 im = Image.new("RGB", (640, 480), "white")
-im.save('result.png')
+im.save(subfolder + '/result.png')
 
 # open connection to webcam
 camera = cv2.VideoCapture(0)
@@ -39,6 +44,10 @@ def load_images_from_folder(folder):
         if img is not None:
             # print("OK")
             images.append(img)
+            path_to_base = os.path.join(folder, "result")
+            base = cv2.imread(os.path.join(path_to_base, "result.png"))
+            combined = cv2.multiply(img, base)
+            cv2.imwrite(os.path.join(path_to_base, "result.png"), combined)
         else:
             print("don't fucking work m8")
     return images
@@ -49,8 +58,8 @@ load_images_from_folder(dirname)
 
 print(len(images))
 
-#for i in images:
-    # image = cv2.imread('opencv1.png')    
+# for i in images:
+    # image = cv2.imread(subfolder + 'opencv1.png')    
     # result = cv2.imread('result.png')
     # combined = cv2.multiply(image, result)
     # cv2.imwrite('result.png', combined)
